@@ -60,12 +60,13 @@ function handleJoinLobbyCommand(ctx) {
 }
 
 function handleStartGameCommand(ctx) {
+  const chatId = ctx.message.chat.id;
+  const lobby = lobbies[chatId];
+  
   if (lobby && lobby.gameStarted) {
     ctx.reply('A game is already in progress in this lobby. Please wait for the current game to end before starting a new one.');
     return;
   }
-  const chatId = ctx.message.chat.id;
-  const lobby = lobbies[chatId];
   
   if (lobby && lobby.players.length >= 2) {
     lobby.game = new BlackjackGame(lobby.players);
