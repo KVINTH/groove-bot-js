@@ -60,6 +60,10 @@ function handleJoinLobbyCommand(ctx) {
 }
 
 function handleStartGameCommand(ctx) {
+  if (lobby && lobby.gameStarted) {
+    ctx.reply('A game is already in progress in this lobby. Please wait for the current game to end before starting a new one.');
+    return;
+  }
   const chatId = ctx.message.chat.id;
   const lobby = lobbies[chatId];
   
@@ -117,10 +121,7 @@ async function handleStandCommand(ctx) {
 }
 
 function resetLobby(chatId) {
-  const lobby = lobbies[chatId];
-  lobby.game = null;
-  lobby.players = [];
-  lobby.gameStarted = false;
+  delete lobbies[chatId];
 }
 
 async function endTurn(ctx, chatId) {
