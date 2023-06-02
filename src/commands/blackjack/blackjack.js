@@ -14,7 +14,7 @@ function handlePlayerTurn(ctx, action) {
     // check if it's the player's turn
     if (currentPlayer.id === playerId) {
       // perform the specified action (hit or stand)
-      action(ctx, currentPlayer, lobby);
+      action(ctx, currentPlayer, lobby, chatId);
     } else {
       ctx.reply("It's not your turn yet.");
     }
@@ -82,7 +82,7 @@ function handleStartGameCommand(ctx) {
 }
 
 function handleHitCommand(ctx) {
-  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby) => {
+  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby, chatId) => {
     // player draws a card
     const card = lobby.game.deck.drawCard();
     currentPlayer.cards.push(card);
@@ -98,7 +98,7 @@ function handleHitCommand(ctx) {
 }
 
 function handleStandCommand(ctx) {
-  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby) => {
+  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby, chatId) => {
     ctx.reply(`You stand with a score of ${currentPlayer.score}.`);
     endTurn(ctx, chatId);
   });
