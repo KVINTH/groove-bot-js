@@ -11,11 +11,9 @@ const NODE_ENV = process.env.NODE_ENV;
 const bot = new Telegraf(TELEGRAM_BOT_TOKEN);
 
 // Set the webhook URL to listen on 0.0.0.0 in production
-if (NODE_ENV === 'production') {
-  bot.telegram.setWebhook('https://groove-bot-js-production.up.railway.app/path', {
-    source: '0.0.0.0',
-  });
-}
+bot.telegram.setWebhook('https://groove-bot-js-production.up.railway.app/path', {
+  source: '0.0.0.0',
+});
 
 // Connect to the database
 const db = knex(require('../knexfile')[NODE_ENV]);
@@ -64,8 +62,4 @@ bot.command('calc', (ctx) => {
 });
 
 // Start the bot
-if (NODE_ENV === 'production') {
-  bot.startWebhook('/path', null, process.env.PORT || 3000);
-} else {
-  bot.launch();
-}
+bot.startWebhook('/path', null, process.env.PORT || 3000);
