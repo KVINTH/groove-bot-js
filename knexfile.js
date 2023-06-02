@@ -9,11 +9,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      database: process.env.DATABASE_URL || process.env.PGDATABASE,
-      host: process.env.PGHOST,
-      password: process.env.PGPASSWORD,
-      port: process.env.PGPORT,
-      user: process.env.PGUSER,
+      database: process.env.DATABASE_URL,
       ssl: {
         rejectUnauthorized: false
       }
