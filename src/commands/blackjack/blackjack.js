@@ -81,26 +81,34 @@ function handleStartGameCommand(ctx) {
   }
 }
 
-function handleHitCommand(ctx) {
-  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby, chatId) => {
-    // player draws a card
-    const card = lobby.game.deck.drawCard();
-    currentPlayer.cards.push(card);
+async function handleHitCommand(ctx) {
+  handlePlayerTurn(ctx, async (ctx, currentPlayer, lobby, chatId) => {
+    try {
+      // player draws a card
+      const card = lobby.game.deck.drawCard();
+      currentPlayer.cards.push(card);
 
-    // Check if player has busted
-    if (currentPlayer.score > 21) {
-      ctx.reply(`You drew ${card.name} and busted with a score of ${currentPlayer.score}!`);
-      endTurn(ctx, chatId);
-    } else {
-      ctx.reply(`You drew ${card.name}. Your total score is now ${currentPlayer.score}.`);
+      // Check if player has busted
+      if (currentPlayer.score > 21) {
+        await ctx.reply(`You drew ${card.name} and busted with a score of ${currentPlayer.score}!`);
+        endTurn(ctx, chatId);
+      } else {
+        await ctx.reply(`You drew ${card.name}. Your total score is now ${currentPlayer.score}.`);
+      }
+    } catch (error) {
+      console.error('Error while handling hit command:', error);
     }
   });
 }
 
-function handleStandCommand(ctx) {
-  handlePlayerTurn(ctx, (ctx, currentPlayer, lobby, chatId) => {
-    ctx.reply(`You stand with a score of ${currentPlayer.score}.`);
-    endTurn(ctx, chatId);
+async function handleStandCommand(ctx) {
+  handlePlayerTurn(ctx, async (ctx, currentPlayer, lobby, chatId) => {
+    try {
+      await ctx.reply(`You stand with a score of ${currentPlayer.score}.`);
+      endTurn(ctx, chatId);
+    } catch (error) {
+      console.error('Error while handling stand command:', error);
+    }
   });
 }
 
