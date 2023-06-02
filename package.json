@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Your package description",
   "scripts": {
-    "start": "node src/bot.js",
+    "start": "node src/index.js",
     "migrate": "knex migrate:latest",
     "build": "npm run migrate && echo Build completed successfully"
   },
