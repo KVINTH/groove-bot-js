@@ -77,7 +77,10 @@ bot.command('calc', (ctx) => {
 bot.launch({
   webhook: {
     domain: process.env.WEBHOOK_DOMAIN,
-    port: process.env.PORT,
-    hookPath: process.env.WEBHOOK_PATH,
+    port: process.env.PORT
   }
 });
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
