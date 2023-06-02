@@ -6,8 +6,14 @@ const math = require('mathjs');
 // create telegraf bot instance
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-// connect to the database
-const db = knex(require('../knexfile').development);
+
+// setup configs for knex and telegraf
+const knexConfig = process.env.NODE_ENV === 'production' 
+  ? require('../knexfile').production 
+  : require('../knexfile').development;
+
+  // connect to the database
+const db = knex(knexConfig);
 
 // Handle the /quote command
 bot.command('quote', async (ctx) => {
