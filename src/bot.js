@@ -3,20 +3,11 @@ const { Telegraf } = require('telegraf');
 const knex = require('knex');
 const math = require('mathjs');
 
-// Load environment variables
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const NODE_ENV = process.env.NODE_ENV;
+// create telegraf bot instance
+const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-// Create Telegraf bot instance
-const bot = new Telegraf(TELEGRAM_BOT_TOKEN);
-
-// Set the webhook URL to listen on 0.0.0.0 in production
-bot.telegram.setWebhook('https://groove-bot-js-production.up.railway.app/path', {
-  source: '0.0.0.0',
-});
-
-// Connect to the database
-const db = knex(require('../knexfile')[NODE_ENV]);
+// connect to the database
+const db = knex(require('../knexfile').development);
 
 // Handle the /quote command
 bot.command('quote', async (ctx) => {
@@ -61,5 +52,32 @@ bot.command('calc', (ctx) => {
   }
 });
 
+// // Handle the /convert command
+// bot.command('convert', async (ctx) => {
+//   try {
+//     const params = ctx.message.text.substring(8).trim().split(' ');
+//     const [amount, fromCurrency, toCurrency] = params;
+//     console.log(params);
+//     const rates = await fixer.latest({ base: "CAD", symbols: ["USD"] });
+//     console.log(rates);
+//     const conversionRate = rates.rates[toCurrency];
+//     if (conversionRate) {
+//       const convertedAmount = amount * conversionRate;
+//       ctx.reply(`${amount} ${fromCurrency} = ${convertedAmount} ${toCurrency}`);
+//     } else {
+//       ctx.reply('Invalid currency code(s).');
+//     }
+//   } catch (error) {
+//     console.error('Error converting currency:', error);
+//     ctx.reply('An error occurred while converting the currency.');
+//   }
+// });
+
 // Start the bot
-bot.startWebhook('/path', null, process.env.PORT || 3000);
+bot.launch({
+  webhook: {
+    domain: process.env.WEBHOOK_DOMAIN,
+    port: process.env.PORT,
+    hookPath: process.env.WEBHOOK_PATH,
+  }
+});
