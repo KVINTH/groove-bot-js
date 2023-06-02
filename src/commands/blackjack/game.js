@@ -1,16 +1,26 @@
 class BlackjackGame {
-  constructor(players) { 
-    this.players = players;
+  constructor(players) {
     this.deck = new Deck();
+    this.players = players;
+    this.dealer = new Player('Bot', 'Dealer');
     this.deck.shuffle();
     this.currentPlayerIndex = 0;
   }
 
   dealInitialCards() {
-    for (let player of this.players) {
-      player.cards.push(this.deck.drawCard(), this.deck.drawCard());
-    }
+    this.players.forEach(player => {
+      player.cards.push(this.deck.drawCard());
+      player.cards.push(this.deck.drawCard());
+    });
+    
+    // Deal two cards to the dealer
+    this.dealer.cards.push(this.deck.drawCard());
+    this.dealer.cards.push(this.deck.drawCard());
+  
+    // Only reveal one of the dealer's cards
+    this.dealer.revealOneCard = true;
   }
+
   currentPlayer() {
     return this.players[this.currentPlayerIndex];
   }
@@ -56,8 +66,17 @@ class Player {
     this.id = id;
     this.name = name;
     this.cards = [];
+    this.revealOneCard = false;
   }
 
+  displayCards() {
+    if (this.revealOneCard) {
+      return `${this.cards[0].name}, ?`;
+    } else {
+      return this.cards.map(card => card.name).join(', ');
+    }
+  }
+  
   get score() {
     let score = 0;
     let aceCount = 0;

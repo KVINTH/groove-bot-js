@@ -73,9 +73,13 @@ function handleStartGameCommand(ctx) {
 
     // Announce each player's cards
     lobby.game.players.forEach(player => {
-      const cardList = player.cards.map(card => card.name).join(', ');
+      const cardList = player.displayCards();
       ctx.reply(`${player.name}'s cards: ${cardList}`);
     });
+
+    // Announce the dealer's cards
+    const dealerCards = lobby.game.dealer.displayCards();
+    ctx.reply(`Dealer's cards: ${dealerCards}`);
   } else {
     ctx.reply('The game cannot start until there are at least two players in the lobby.');
   }
@@ -119,11 +123,17 @@ function resetLobby(chatId) {
   lobby.gameStarted = false;
 }
 
-function endTurn(ctx, chatId) {
+async function endTurn(ctx, chatId) {
   const lobby = lobbies[chatId];
   const game = lobby.game;
   game.currentPlayerIndex++;
   if (game.currentPlayerIndex >= game.players.length) {
+    // It's the dealer's turn
+    while (game.dealer.score < 17) {
+      const card = game.deck.drawCard();
+      game.dealer.cards.push(card);
+      await ctx.reply(`Dealer drew ${card.name}. Dealer's total score is now ${game.dealer.score}.`);
+    }
     endGame(ctx, chatId);
   } else {
     const nextPlayer = game.players[game.currentPlayerIndex];
@@ -131,30 +141,24 @@ function endTurn(ctx, chatId) {
   }
 }
 
-function endGame(ctx, chatId) {
+function endGame(ctx,chatId) {
   const lobby = lobbies[chatId];
-  const scores = lobby.game.players
-    .filter((player) => player.score <= 21)
-    .map((player) => player.score);
+  const dealerScore = lobby.game.dealer.score;
   
-  if (scores.length === 0) {
-    ctx.reply('All players have busted. No one wins!');
+  if (dealerScore > 21) {
+    ctx.reply('Dealer has busted. All remaining players win!');
     return;
   }
 
-  const highestScore = Math.max(...scores);
+  const winners = lobby.game.players
+    .filter(player => player.score > dealerScore && player.score <= 21);
   
-  // Check if the game ended in a tie
-  const winners = lobby.game.players.filter(player => player.score === highestScore);
-  
-  if (winners.length > 1) {
-    // The game ended in a tie
-    let winnerNames = winners.map(player => player.name).join(', ');
-    ctx.reply(`The game ended in a tie between: ${winnerNames}`);
+  if (winners.length === 0) {
+    ctx.reply(`Dealer wins with a score of ${dealerScore}!`);
   } else {
-    // We have a single winner
-    const winner = winners[0];
-    ctx.reply(`${winner.name} is the winner with a score of ${highestScore}!`);
+    // We have winners
+    let winnerNames = winners.map(player => player.name).join(', ');
+    ctx.reply(`The winners are: ${winnerNames} with a score higher than dealer's score of ${dealerScore}!`);
   }
 
   // Reset the lobby after the game ends
