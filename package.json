@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node src/bot.js",
     "migrate": "knex migrate:latest",
-    "build": "npm run migrate && echo Build completed successfully"
+    "build": "NODE_ENV=production knex migrate:latest && echo Build completed successfully"
   },
   "dependencies": {
     "dotenv": "^16.1.3",
