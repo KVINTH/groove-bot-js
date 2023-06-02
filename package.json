@@ -1,4 +1,12 @@
 {
+  "name": "groovebot.js",
+  "version": "0.1.0",
+  "description": "Your package description",
+  "scripts": {
+    "start": "node src/bot.js",
+    "migrate": "knex migrate:latest",
+    "build": "npm run migrate && echo Build completed successfully"
+  },
   "dependencies": {
     "dotenv": "^16.1.3",
     "fixer-api": "^2.2.6",
