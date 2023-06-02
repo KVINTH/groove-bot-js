@@ -10,6 +10,10 @@ bot.command('quote', handleQuoteCommand);
 bot.command('addquote', handleAddQuoteCommand);
 bot.command('calc', handleCalcCommand);
 
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
 function launchBot() {
   if (process.env.NODE_ENV === 'production') {
     bot.launch({
