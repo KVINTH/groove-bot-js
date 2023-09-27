@@ -2,7 +2,15 @@ const db = require('../database');
 
 function handleQuoteCommand(ctx) {
   try {
-    db.select('quote').from('quotes').orderByRaw('RANDOM()').limit(1)
+    // extract text after /quote command
+    const inputText = ctx.message.text.split(' ')[1] || '';
+
+    let query = db.select('quote').from('quotes');
+    if (inputText) {
+      query = query.where('quote', 'ilike', `%${inputText}%`);
+    }
+
+    query.orderByRaw('RANDOM()').limit(1)
       .then(([quote]) => {
         if (quote) {
           ctx.reply(quote.quote);
