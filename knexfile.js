@@ -9,8 +9,9 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
+    acquireConnectionTimeout: 600000,
     pool: {
-      min: 2,
+      min: 0,
       max: 10
     },
     migrations: {
