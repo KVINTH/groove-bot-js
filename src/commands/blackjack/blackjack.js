@@ -1,4 +1,5 @@
 const { Player, BlackjackGame } = require('./game');
+const { isAuthorized } = require('../../services/authorization_service');
 
 const lobbies = {};
 
@@ -145,7 +146,7 @@ async function handleStandCommand(ctx) {
     ctx.reply('You are not authorized to use this command.');
     return;
   }
-  
+
   handlePlayerTurn(ctx, async (ctx, currentPlayer, lobby, chatId) => {
     try {
       await ctx.reply(`You stand with a score of ${currentPlayer.score}.`);

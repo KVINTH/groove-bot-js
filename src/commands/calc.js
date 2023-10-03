@@ -1,5 +1,6 @@
 
 const { evaluateEquation } = require('../helpers');
+const { isAuthorized } = require('../services/authorization_service');
 
 async function handleCalcCommand(ctx) {
   const authorized = await isAuthorized(ctx.message.chat.id);
