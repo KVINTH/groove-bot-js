@@ -1,6 +1,13 @@
 const db = require('../database');
 
-function handlePhotoCommand(ctx) {
+async function handlePhotoCommand(ctx) {
+  const authorized = await isAuthorized(ctx.message.chat.id);
+  
+  if (!authorized) {
+    ctx.reply('You are not authorized to use this command.');
+    return;
+  }
+
   try {
     db.select('file_id', 'caption')
       .from('photos')
@@ -19,7 +26,14 @@ function handlePhotoCommand(ctx) {
   }
 }
 
-function handleAddPhotoCommand(ctx) {
+async function handleAddPhotoCommand(ctx) {
+  const authorized = await isAuthorized(ctx.message.chat.id);
+  
+  if (!authorized) {
+    ctx.reply('You are not authorized to use this command.');
+    return;
+  }
+  
   try {
     const command = '/addphoto';
 
