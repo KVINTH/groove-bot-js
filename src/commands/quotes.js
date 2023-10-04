@@ -1,14 +1,6 @@
 const db = require('../database');
-const { isAuthorized } = require('../services/authorization_service');
 
 async function handleQuoteCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   try {
     // extract text after /quote command
     const inputText = ctx.message.text.split(' ')[1] || '';
@@ -37,13 +29,6 @@ async function handleQuoteCommand(ctx) {
 }
 
 async function handleAddQuoteCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   try {
     const quote = ctx.message.text.substring(10).trim(); // Extract the quote text
     if (quote) {

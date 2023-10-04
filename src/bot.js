@@ -12,9 +12,13 @@ const {
   handleHitCommand,
   handleStandCommand
 } = require('./commands/blackjack/blackjack');
+const { authorizationMiddleware } = require('./middleware/authorization');
 
 const bot = new Telegraf(config.telegramBotToken);
 bot.command('auth', handleAuthCommand);
+
+bot.use(authorizationMiddleware);
+
 bot.command('quote', handleQuoteCommand);
 bot.command('addquote', handleAddQuoteCommand);
 bot.command('calc', handleCalcCommand);

@@ -1,5 +1,15 @@
-
 const db = require('../database');
+
+async function authorizationMiddleware(ctx, next) {
+  const authorized = await isAuthorized(ctx.message.chat.id);
+  
+  if (!authorized) {
+    ctx.reply('You are not authorized to use this command.');
+    return;
+  }
+
+  next();
+}
 
 async function isAuthorized(chatId) {
   let isAuthorized = false;
@@ -19,5 +29,5 @@ async function isAuthorized(chatId) {
 };
 
 module.exports = {
-  isAuthorized,
+  authorizationMiddleware,
 }

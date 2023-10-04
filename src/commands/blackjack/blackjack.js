@@ -1,5 +1,4 @@
 const { Player, BlackjackGame } = require('./game');
-const { isAuthorized } = require('../../services/authorization_service');
 
 const lobbies = {};
 
@@ -25,13 +24,6 @@ function handlePlayerTurn(ctx, action) {
 }
 
 async function handleCreateLobbyCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   const chatId = ctx.message.chat.id;
   if (!lobbies[chatId]) {
     lobbies[chatId] = {
@@ -46,13 +38,6 @@ async function handleCreateLobbyCommand(ctx) {
 }
 
 async function handleJoinLobbyCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   const chatId = ctx.message.chat.id;
   const lobby = lobbies[chatId];
   
@@ -75,13 +60,6 @@ async function handleJoinLobbyCommand(ctx) {
 }
 
 async function handleStartGameCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   const chatId = ctx.message.chat.id;
   const lobby = lobbies[chatId];
   
@@ -113,13 +91,6 @@ async function handleStartGameCommand(ctx) {
 }
 
 async function handleHitCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   handlePlayerTurn(ctx, async (ctx, currentPlayer, lobby, chatId) => {
     try {
       // player draws a card
@@ -140,13 +111,6 @@ async function handleHitCommand(ctx) {
 }
 
 async function handleStandCommand(ctx) {
-  const authorized = await isAuthorized(ctx.message.chat.id);
-  
-  if (!authorized) {
-    ctx.reply('You are not authorized to use this command.');
-    return;
-  }
-
   handlePlayerTurn(ctx, async (ctx, currentPlayer, lobby, chatId) => {
     try {
       await ctx.reply(`You stand with a score of ${currentPlayer.score}.`);
