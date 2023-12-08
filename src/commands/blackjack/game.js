@@ -4,7 +4,9 @@ class BlackjackGame {
     this.players = players;
     this.dealer = new Player('Bot', 'Dealer');
     this.deck.shuffle();
-    this.currentPlayerIndex = 0;
+    
+    let randomIndex = Math.floor(Math.random() * this.players.length);
+    this.currentPlayerIndex = randomIndex;
   }
 
   dealInitialCards() {
