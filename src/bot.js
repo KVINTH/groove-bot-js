@@ -12,6 +12,12 @@ const {
   handleHitCommand,
   handleStandCommand
 } = require('./commands/blackjack/blackjack');
+const {
+  handleStartServerCommand,
+  handleStopServerCommand,
+  handleCheckServerCommand
+} = require('./commands/palworld');
+
 const { authorizationMiddleware } = require('./middleware/authorization');
 
 const bot = new Telegraf(config.telegramBotToken);
@@ -33,6 +39,9 @@ bot.command('addphoto', (ctx) => {
 });
 
 bot.on('photo', handleAddPhotoCommand);
+bot.command('startserver', handleStartServerCommand);
+bot.command('stopserver', handleStopServerCommand);
+bot.command('checkserver', handleCheckServerCommand);
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
