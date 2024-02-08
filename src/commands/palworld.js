@@ -21,3 +21,9 @@ async function handleCheckServerCommand(ctx) {
     .then(response => ctx.reply(response.data))
     .catch(err => ctx.reply(err.message));
 }
+
+module.exports = {
+  handleStartServerCommand,
+  handleStopServerCommand,
+  handleCheckServerCommand
+}
