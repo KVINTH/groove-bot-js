@@ -1,5 +1,5 @@
 
-const url = "https://mqpw21w3-7275.usw2.devtunnels.ms";
+const url = "https://dev.kainth.ca";
 
 async function handleStartServerCommand(ctx) {
   ctx.reply('Starting server...');
