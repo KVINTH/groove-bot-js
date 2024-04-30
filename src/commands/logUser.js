@@ -2,10 +2,10 @@ const db = require('../database');
 
 async function logUser(ctx) {
 
-  if (ctx.message.from.id === '37922497') {
+  if (ctx.message.from.id === 37922497) {
     ctx.reply('Why are you gay?');
   }
-  
+
   try {
     const user = await db.select('telegram_id')
       .from('users')
