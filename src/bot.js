@@ -44,6 +44,10 @@ bot.command('startserver', handleStartServerCommand);
 bot.command('stopserver', handleStopServerCommand);
 bot.command('checkserver', handleCheckServerCommand);
 
+bot.on('message', (ctx) => {
+  console.log(`User: ${ctx.message.from.id} | ${ctx.message.from.username} sent: ${ctx.message.text}`);
+});
+
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
