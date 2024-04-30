@@ -19,6 +19,10 @@ const {
   handleCheckServerCommand
 } = require('./commands/palworld');
 
+const {
+  logUser
+} = require('./commands/logUser');
+
 const { authorizationMiddleware } = require('./middleware/authorization');
 
 const bot = new Telegraf(config.telegramBotToken);
@@ -44,9 +48,7 @@ bot.command('startserver', handleStartServerCommand);
 bot.command('stopserver', handleStopServerCommand);
 bot.command('checkserver', handleCheckServerCommand);
 
-bot.on('message', (ctx) => {
-  console.log(`User: ${ctx.message.from.id} | ${ctx.message.from.username} sent: ${ctx.message.text}`);
-});
+bot.on('message', logUser);
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
