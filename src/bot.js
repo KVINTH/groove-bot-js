@@ -19,9 +19,9 @@ const {
   handleCheckServerCommand
 } = require('./commands/palworld');
 
-const {
-  logUser
-} = require('./commands/logUser');
+// const {
+//   logUser
+// } = require('./commands/logUser');
 
 const { authorizationMiddleware } = require('./middleware/authorization');
 
@@ -48,7 +48,7 @@ bot.command('startserver', handleStartServerCommand);
 bot.command('stopserver', handleStopServerCommand);
 bot.command('checkserver', handleCheckServerCommand);
 
-bot.on('message', logUser);
+// bot.on('message', logUser);
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
