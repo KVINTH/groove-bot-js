@@ -1,6 +1,11 @@
 const db = require('../database');
 
 async function authorizationMiddleware(ctx, next) {
+  if (!ctx.message.chat) {
+    console.log("No chat found", ctx.message);
+    return;
+  }
+
   const authorized = await isAuthorized(ctx.message.chat.id);
   
   if (!authorized) {
