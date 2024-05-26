@@ -8,6 +8,8 @@
     "build": "npm run migrate && echo Build completed successfully"
   },
   "dependencies": {
+    "@sentry/node": "^8.4.0",
+    "@sentry/profiling-node": "^8.4.0",
     "axios": "^1.6.7",
     "dotenv": "^16.1.3",
     "fixer-api": "^2.2.6",
