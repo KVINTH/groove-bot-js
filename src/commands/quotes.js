@@ -30,7 +30,8 @@ async function handleQuoteCommand(ctx) {
 
 async function handleAddQuoteCommand(ctx) {
   try {
-    const quote = ctx.message.text.substring(10).trim(); // Extract the quote text
+    const quote = ctx.message.text.split(' ')[1] || '';
+
     if (quote && quote.length > 0) {
       db.insert({ quote }).into('quotes')
         .then(() => {
