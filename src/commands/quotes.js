@@ -32,6 +32,10 @@ async function handleAddQuoteCommand(ctx) {
   try {
     const quote = ctx.message.text.split(' ')[1] || '';
 
+    if (ctx.message.reply_to_message) {
+      quote = `"${ctx.message.reply_to_message.text}" - ${ctx.message.reply_to_message.from.first_name} ${ctx.message.reply_to_message.from.last_name}`;
+    }
+
     if (quote && quote.length > 0) {
       db.insert({ quote }).into('quotes')
         .then(() => {
