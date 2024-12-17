@@ -33,7 +33,15 @@ async function handleAddQuoteCommand(ctx) {
     let quote = ctx.message.text.split(' ')[1] || '';
 
     if (ctx.message.reply_to_message) {
-      quote = `"${ctx.message.reply_to_message.text}" - ${ctx.message.reply_to_message.from.first_name} ${ctx.message.reply_to_message.from.last_name}`;
+      const firstName = ctx.message.reply_to_message.from.first_name || '';
+      const lastName = ctx.message.reply_to_message.from.last_name || '';
+      const fullName = `${firstName} ${lastName}`.trim();
+
+      if (fullName.length > 0) {
+        quote = `${quote} - ${fullName}`;
+      } else {
+        quote = `${quote} - ${ctx.message.reply_to_message.from.username}`;
+      }
     }
 
     if (quote && quote.length > 0) {
