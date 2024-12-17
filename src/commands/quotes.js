@@ -30,7 +30,7 @@ async function handleQuoteCommand(ctx) {
 
 async function handleAddQuoteCommand(ctx) {
   try {
-    const quote = ctx.message.text.split(' ')[1] || '';
+    let quote = ctx.message.text.split(' ')[1] || '';
 
     if (ctx.message.reply_to_message) {
       quote = `"${ctx.message.reply_to_message.text}" - ${ctx.message.reply_to_message.from.first_name} ${ctx.message.reply_to_message.from.last_name}`;
