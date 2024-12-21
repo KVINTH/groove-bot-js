@@ -39,9 +39,7 @@ bot.command('start', handleStartGameCommand);
 bot.command('hit', handleHitCommand);
 bot.command('stand', handleStandCommand);
 bot.command('photo', handlePhotoCommand);
-bot.command('addphoto', (ctx) => {
-  ctx.reply('Send me a photo with the caption /addphoto "Your Caption" to add it to my database!');
-});
+bot.command('addphoto', handleAddPhotoCommand);
 
 bot.on('photo', handleAddPhotoCommand);
 bot.command('startserver', handleStartServerCommand);
