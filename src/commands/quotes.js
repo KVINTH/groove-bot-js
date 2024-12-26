@@ -36,6 +36,8 @@ async function handleAddQuoteCommand(ctx) {
       const firstName = ctx.message.reply_to_message.from.first_name || '';
       const lastName = ctx.message.reply_to_message.from.last_name || '';
       const fullName = `${firstName} ${lastName}`.trim();
+      
+      quote = ctx.message.reply_to_message.text;
 
       if (fullName.length > 0) {
         quote = `${quote} - ${fullName}`;
