@@ -32,13 +32,16 @@ async function handleAddPhotoCommand(ctx) {
     }
 
     let fileId;
-    let caption;
+    let caption = '';
 
     // Case 1: Replied-to photo
     if (ctx.message.reply_to_message && ctx.message.reply_to_message.photo) {
       fileId = ctx.message.reply_to_message.photo[0].file_id;
-      // Default to empty caption if no text after the command
-      caption = ctx.message.text?.substring(command.length).trim() || '';
+
+      // Combine original photo's caption and any text after the command
+      const originalCaption = ctx.message.reply_to_message.caption || '';
+      const additionalCaption = ctx.message.text?.substring(command.length).trim() || '';
+      caption = [originalCaption, additionalCaption].filter(Boolean).join(' ').trim();
     }
     // Case 2: Photo with or without caption
     else if (ctx.message.photo && ctx.message.caption?.startsWith(command)) {
