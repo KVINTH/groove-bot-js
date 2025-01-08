@@ -11,6 +11,11 @@ function evaluateEquation(equation) {
   }
 }
 
+function getCommandArguments(messageText) {
+  return messageText.split(' ').slice(1).join(' ').trim();
+}
+
 module.exports = {
-  evaluateEquation
+  evaluateEquation,
+  getCommandArguments
 };

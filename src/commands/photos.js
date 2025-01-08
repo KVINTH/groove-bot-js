@@ -1,17 +1,28 @@
 const db = require('../database');
+const  { getCommandArguments } = require('../helpers');
 
 async function handlePhotoCommand(ctx) {
   try {
-    db.select('file_id', 'caption')
-      .from('photos')
-      .orderByRaw('RANDOM()')
-      .limit(1)
+    const inputText = getCommandArguments(ctx.message.text);
+
+    let query = db.select('file_id', 'caption').from('photos');
+
+    // If inputText is provided, filter by caption (case-insensitive)
+    if (inputText) {
+      query = query.where('caption', 'ilike', `%${inputText}%`);
+    }
+
+    query.orderByRaw('RANDOM()').limit(1)
       .then(([photo]) => {
         if (photo) {
           ctx.replyWithPhoto(photo.file_id, { caption: photo.caption });
         } else {
-          ctx.reply('No photos available.');
+          ctx.reply('No photos matching the caption were found.');
         }
+      })
+      .catch(error => {
+        console.error('Error retrieving photo:', error);
+        ctx.reply('An error occurred while retrieving the photo.');
       });
   } catch (error) {
     console.error('Error retrieving photo:', error);

@@ -1,9 +1,9 @@
 const db = require('../database');
+const { getCommandArguments } = require('../helpers');
 
 async function handleQuoteCommand(ctx) {
   try {
-    // extract text after /quote command
-    const inputText = ctx.message.text.split(' ')[1] || '';
+    const inputText = getCommandArguments(ctx.message.text);
 
     let query = db.select('quote').from('quotes');
     if (inputText) {
