@@ -30,7 +30,7 @@ async function handleQuoteCommand(ctx) {
 
 async function handleAddQuoteCommand(ctx) {
   try {
-    let quote = ctx.message.text.split(' ')[1] || '';
+    let quote = ctx.message.text.split(' ').slice(1).join(' ');
 
     if (ctx.message.reply_to_message) {
       const firstName = ctx.message.reply_to_message.from.first_name || '';
