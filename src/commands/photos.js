@@ -32,14 +32,14 @@ async function handlePhotoCommand(ctx) {
 
 async function handleAddPhotoCommand(ctx) {
   try {
-    const command = '/addphoto';
+    // Create a regex that matches /addphoto with an optional @username and trailing spaces
+    const commandRegex = /^\/addphoto(?:@\w+)?\s*/;
 
-    // Ensure the message contains the command explicitly
-    if (
-      !ctx.message.text?.startsWith(command) && // For messages with text
-      !(ctx.message.caption?.startsWith(command)) // For photo captions
-    ) {
-      return; // Do nothing if the command is not explicitly called
+    // Get the text from either the message or caption
+    const messageText = ctx.message.text || ctx.message.caption || '';
+    // Return early if the command isn't properly called
+    if (!commandRegex.test(messageText)) {
+      return;
     }
 
     let fileId;
@@ -48,17 +48,16 @@ async function handleAddPhotoCommand(ctx) {
     // Case 1: Replied-to photo
     if (ctx.message.reply_to_message && ctx.message.reply_to_message.photo) {
       fileId = ctx.message.reply_to_message.photo[0].file_id;
-
-      // Combine original photo's caption and any text after the command
       const originalCaption = ctx.message.reply_to_message.caption || '';
-      const additionalCaption = ctx.message.text?.substring(command.length).trim() || '';
+      // Remove the command (and optional username) from the additional caption text
+      const additionalCaption = (ctx.message.text || '').replace(commandRegex, '').trim();
       caption = [originalCaption, additionalCaption].filter(Boolean).join(' ').trim();
     }
     // Case 2: Photo with or without caption
-    else if (ctx.message.photo && ctx.message.caption?.startsWith(command)) {
+    else if (ctx.message.photo && ctx.message.caption && commandRegex.test(ctx.message.caption)) {
       fileId = ctx.message.photo[0].file_id;
-      // Default to empty caption if no text after the command
-      caption = ctx.message.caption.substring(command.length).trim() || '';
+      // Remove the command (and optional username) from the caption text
+      caption = ctx.message.caption.replace(commandRegex, '').trim() || '';
     }
     // Invalid case
     else {
