@@ -6,12 +6,12 @@ const { handleCalcCommand } = require('./commands/calc');
 const { handleQuoteCommand, handleAddQuoteCommand } = require('./commands/quotes');
 const { handlePhotoCommand, handleAddPhotoCommand } = require('./commands/photos');
 const {
-  handleCreateLobbyCommand,
-  handleJoinLobbyCommand,
-  handleStartGameCommand,
-  handleHitCommand,
-  handleStandCommand
-} = require('./commands/blackjack/blackjack');
+  handleCreateLobby,
+  handleJoinLobby,
+  handleStartGame,
+  handleHit,
+  handleStand
+} = require('./commands/blackjackHandlers');
 
 const {
   handleStartServerCommand,
@@ -26,22 +26,29 @@ const {
 const { authorizationMiddleware } = require('./middleware/authorization');
 
 const bot = new Telegraf(config.telegramBotToken);
-bot.command('auth', handleAuthCommand);
 
+// General commands
+bot.command('auth', handleAuthCommand);
+bot.command('calc', handleCalcCommand);
 bot.use(authorizationMiddleware);
 
+// Quote commands
 bot.command('quote', handleQuoteCommand);
 bot.command('addquote', handleAddQuoteCommand);
-bot.command('calc', handleCalcCommand);
-bot.command('create', handleCreateLobbyCommand);
-bot.command('join', handleJoinLobbyCommand);
-bot.command('start', handleStartGameCommand);
-bot.command('hit', handleHitCommand);
-bot.command('stand', handleStandCommand);
+
+// Blackjack commands
+bot.command('create', handleCreateLobby);
+bot.command('join', handleJoinLobby);
+bot.command('start', handleStartGame);
+bot.command('hit', handleHit);
+bot.command('stand', handleStand);
+
+// photo commands
 bot.command('photo', handlePhotoCommand);
 bot.command('addphoto', handleAddPhotoCommand);
-
 bot.on('photo', handleAddPhotoCommand);
+
+// Palworld server commands
 bot.command('startserver', handleStartServerCommand);
 bot.command('stopserver', handleStopServerCommand);
 bot.command('checkserver', handleCheckServerCommand);
