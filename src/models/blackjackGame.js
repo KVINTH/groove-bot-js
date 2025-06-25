@@ -11,8 +11,13 @@ class BlackjackGame {
 
   start() {
     this.deck.shuffle();
-    this.players.forEach(p => p.deal(this.deck));
-    this.dealer.deal(this.deck);
+    
+    this.players.forEach(p => {
+      p.cards = [this.deck.draw(), this.deck.draw()];
+    });
+
+    this.dealer.cards = [this.deck.draw(), this.deck.draw()];
+
   }
 
   currentPlayer() {
