@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node src/index.js",
     "migrate": "knex migrate:latest",
-    "build": "npm run migrate && echo Build completed successfully"
+    "build": "npm run migrate && echo Build completed successfully",
+    "test" : "jest"
   },
   "dependencies": {
     "@sentry/node": "^8.4.0",
@@ -18,5 +19,8 @@
     "pg": "^8.11.0",
     "sqlite3": "^5.1.6",
     "telegraf": "^4.12.2"
+  },
+  "devDependencies": {
+    "jest": "^30.0.3"
   }
 }

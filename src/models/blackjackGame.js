@@ -21,7 +21,7 @@ class BlackjackGame {
   }
 
   currentPlayer() {
-    return this.players(this.currentPlayerIndex);
+    return this.players[this.currentPlayerIndex];
   }
 
   hit(player) {
